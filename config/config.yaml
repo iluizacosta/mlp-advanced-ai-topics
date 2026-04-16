@@ -1,0 +1,11 @@
+data:
+  raw_path: "data/raw/fetal_health.csv"
+  test_size: 0.2
+  random_state: 42
+  target_col: "fetal_health"
+
+preprocessing:
+  missing_threshold: 0.5
+  imputation_strategy: "median"
+
+seed: 42
