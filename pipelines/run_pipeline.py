@@ -1,10 +1,14 @@
 import yaml
 
 from src.utils import set_seed
+from src.data_loading import download_data
 
-# Carregar o config
+# Carregar config
 with open("config/config.yaml", "r") as f:
     config = yaml.safe_load(f)
 
-# Aplicar a seed
+# Aplicar seed
 set_seed(config["seed"])
+
+# Download dos dados
+download_data()
