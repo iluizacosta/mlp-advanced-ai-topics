@@ -1,6 +1,8 @@
 import kagglehub
 import shutil
 import os
+import pandas as pd
+import wandb
 
 def download_data():
     """
@@ -36,3 +38,20 @@ def download_data():
         shutil.move(os.path.join(path, file), "data/raw/")
 
     print("Download concluído com sucesso.")
+
+def log_raw_data():
+    """
+    Loga o dataset bruto no W&B como artifact.
+    """
+
+    run = wandb.init(project="mlp-fetal-health", job_type="data_ingestion")
+
+    artifact = wandb.Artifact(
+        name="fetal_health_raw",
+        type="dataset"
+    )
+
+    artifact.add_file("data/raw/fetal_health.csv")
+
+    run.log_artifact(artifact)
+    run.finish()
