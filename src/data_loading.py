@@ -39,23 +39,6 @@ def download_data():
 
     print("Download concluído com sucesso.")
 
-def log_raw_data():
-    """
-    Loga o dataset bruto no W&B como artifact.
-    """
-
-    run = wandb.init(project="mlp-fetal-health", job_type="data_ingestion")
-
-    artifact = wandb.Artifact(
-        name="fetal_health_raw",
-        type="dataset"
-    )
-
-    artifact.add_file("data/raw/fetal_health.csv")
-
-    run.log_artifact(artifact)
-    run.finish()
-
 def load_data(path):
     """
     Carrega o dataset a partir de um arquivo CSV.
@@ -72,3 +55,22 @@ def load_data(path):
     print(f"Shape: {df.shape}")
     
     return df
+
+def log_raw_data(df):
+    """
+    Loga o dataset bruto no W&B como artifact.
+    """
+
+    artifact = wandb.Artifact(
+        name="fetal_health_raw",
+        type="dataset",
+        description="Fetal Health dataset from Kaggle"
+    )
+
+    artifact.add_file("data/raw/fetal_health.csv")
+
+    wandb.log_artifact(artifact)
+
+    # informações úteis no dashboard
+    wandb.summary["rows"] = len(df)
+    wandb.summary["columns"] = list(df.columns)
