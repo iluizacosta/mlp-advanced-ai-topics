@@ -55,3 +55,20 @@ def log_raw_data():
 
     run.log_artifact(artifact)
     run.finish()
+
+def load_data(path):
+    """
+    Carrega o dataset a partir de um arquivo CSV.
+
+    Args:
+        path (str): Caminho para o arquivo CSV.
+
+    Returns:
+        pd.DataFrame: DataFrame contendo os dados carregados.
+    """
+    df = pd.read_csv(path)
+    
+    print(f"Dataset carregado de: {path}")
+    print(f"Shape: {df.shape}")
+    
+    return df
