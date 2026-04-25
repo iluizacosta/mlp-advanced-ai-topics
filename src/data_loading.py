@@ -2,7 +2,7 @@ import kagglehub
 import shutil
 import os
 import pandas as pd
-import wandb
+
 
 def download_data():
     """
@@ -39,6 +39,7 @@ def download_data():
 
     print("Download concluído com sucesso.")
 
+
 def load_data(path):
     """
     Carrega o dataset a partir de um arquivo CSV.
@@ -50,27 +51,8 @@ def load_data(path):
         pd.DataFrame: DataFrame contendo os dados carregados.
     """
     df = pd.read_csv(path)
-    
+
     print(f"Dataset carregado de: {path}")
     print(f"Shape: {df.shape}")
-    
+
     return df
-
-def log_raw_data(df):
-    """
-    Loga o dataset bruto no W&B como artifact.
-    """
-
-    artifact = wandb.Artifact(
-        name="fetal_health_raw",
-        type="dataset",
-        description="Fetal Health dataset from Kaggle"
-    )
-
-    artifact.add_file("data/raw/fetal_health.csv")
-
-    wandb.log_artifact(artifact)
-
-    # informações úteis no dashboard
-    wandb.summary["rows"] = len(df)
-    wandb.summary["columns"] = list(df.columns)
