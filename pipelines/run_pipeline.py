@@ -14,6 +14,8 @@ from src.data_testing import (
     test_target_values,
     test_no_duplicates
 )
+from src.split_data import stratified_split, ks_test
+from src.train import split_features_target
 
 # Carregar config
 with open("config/config.yaml", "r") as f:
@@ -37,7 +39,13 @@ df = load_data(config["data"]["raw_path"])
 df = remove_duplicates(df)
 check_missing_values(df)
 
-# depois do cleaning
+# outliers (não foi utilizado por remover extensas quantidades de dados)
+# df = remove_outliers_iqr(
+#    df,
+#    config["data"]["target_col"]
+# )
+
+# Depois do cleaning
 test_no_missing_values(df)
 test_no_duplicates(df)
 
@@ -54,4 +62,3 @@ clean_path = save_clean_data(df)
 log_clean_data(clean_path)
 
 wandb.finish()
-
