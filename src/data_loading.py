@@ -6,23 +6,23 @@ import pandas as pd
 
 def download_data():
     """
-    Faz o download do dataset do Kaggle e salva em data/raw.
-    Trata falhas de cache do kagglehub.
+    Downloads the dataset from Kaggle and saves it to data/raw.
+    Handles kagglehub cache failures.
     """
 
     os.makedirs("data/raw", exist_ok=True)
 
     if os.path.exists("data/raw/fetal_health.csv"):
-        print("Dataset já existe. Pulando download.")
+        print("Dataset already exists. Skipping download.")
         return
 
-    print("Baixando dataset...")
+    print("Downloading dataset...")
 
     path = kagglehub.dataset_download("andrewmvd/fetal-health-classification")
     files = os.listdir(path)
 
     if not files:
-        print("Cache vazio detectado. Limpando cache e tentando novamente...")
+        print("Empty cache detected. Clearing cache and retrying...")
 
         cache_dir = os.path.expanduser("~/.cache/kagglehub")
         if os.path.exists(cache_dir):
@@ -32,27 +32,50 @@ def download_data():
         files = os.listdir(path)
 
         if not files:
-            raise ValueError("Falha no download mesmo após limpar o cache.")
+            raise ValueError("Download failed even after clearing cache.")
 
     for file in files:
         shutil.move(os.path.join(path, file), "data/raw/")
 
-    print("Download concluído com sucesso.")
+    print("Download completed successfully.")
 
 
 def load_data(path):
     """
-    Carrega o dataset a partir de um arquivo CSV.
+    Loads the dataset from a CSV file.
 
     Args:
-        path (str): Caminho para o arquivo CSV.
+        path (str): Path to the CSV file.
 
     Returns:
-        pd.DataFrame: DataFrame contendo os dados carregados.
+        pd.DataFrame: DataFrame containing the loaded data.
     """
     df = pd.read_csv(path)
 
-    print(f"Dataset carregado de: {path}")
+    print(f"Dataset loaded from: {path}")
     print(f"Shape: {df.shape}")
 
     return df
+
+
+def log_raw_data(df):
+    """
+    Logs the raw dataset to Weights & Biases as an artifact.
+    """
+
+    import wandb
+
+    temp_path = "temp_raw.csv"
+    df.to_csv(temp_path, index=False)
+
+    artifact = wandb.Artifact(
+        name="fetal_health_raw",
+        type="dataset",
+        description="Raw dataset"
+    )
+
+    artifact.add_file(temp_path)
+
+    wandb.log_artifact(artifact)
+
+    os.remove(temp_path)
