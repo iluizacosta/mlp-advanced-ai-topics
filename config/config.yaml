@@ -1,11 +1,40 @@
 data:
+  # Path to the raw fetal health dataset
   raw_path: "data/raw/fetal_health.csv"
+
+  # Proportion of data used for testing
   test_size: 0.2
+
+  # Random seed for reproducibility in split
   random_state: 42
-  target_col: "fetal_health"
 
-preprocessing:
-  missing_threshold: 0.5
-  imputation_strategy: "median"
+  # Target variable (classification label)
+  target_col: "fetal_health" # 1 = Normal, 2 = Suspect, 3 = Pathological
 
+  # Threshold for dropping columns with too many missing values
+  missing_threshold: 0.5 # Not used in this dataset (no missing values), but kept for generalization
+
+  # Strategy for imputing missing values (if needed)
+  imputation_strategy: "median" # Median is robust for numeric features
+
+model:
+  # MLP architecture (number of neurons per hidden layer)
+  hidden_sizes: [64, 32]
+
+  # Dropout rate to reduce overfitting
+  dropout: 0.2,
+
+  # Learning rate for optimizer
+  learning_rate: 0.001
+
+  # Batch size for training
+  batch_size: 32
+
+  # Number of training epochs
+  epochs: 100
+
+  # Early stopping patience (stop if no improvement)
+  "early_stopping_patience": 10
+
+# Global seed for full pipeline reproducibility
 seed: 42
