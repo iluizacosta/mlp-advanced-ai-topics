@@ -1,4 +1,5 @@
 import pandas as pd
+from scipy.stats import ks_2samp
 
 def ks_test(train_df: pd.DataFrame, test_df: pd.DataFrame, columns: list) -> dict:
     """
