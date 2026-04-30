@@ -1,3 +1,5 @@
+import wandb
+
 def remove_duplicates(df):
     """
     Remove linhas duplicadas do dataset.
@@ -29,7 +31,7 @@ def check_missing_values(df):
 
 def save_clean_data(df):
     """
-    Salva o dataset limpo.
+    Saves the clean dataset.
     """
     import os
 
@@ -38,15 +40,14 @@ def save_clean_data(df):
     path = "data/processed/fetal_health_clean.csv"
     df.to_csv(path, index=False)
 
-    print(f"Dataset limpo salvo em: {path}")
+    print(f"Cleaned dataset saved at: {path}")
 
     return path
 
 def log_clean_data(path):
     """
-    Loga o dataset limpo como artifact.
+    Logs the clean data as an Artifact.
     """
-    import wandb
 
     artifact = wandb.Artifact(
         name="fetal_health_clean",
