@@ -15,7 +15,7 @@ from src.data_validation import (
     validate_no_duplicates
 )
 from src.split_data import stratified_split, ks_test
-from src.train import split_features_target
+from src.feature_selection import combined_feature_ranking
 
 
 # ======================
@@ -169,6 +169,7 @@ test_path = "data/processed/test.csv"
 train_df.to_csv(train_path, index=False)
 test_df.to_csv(test_path, index=False)
 
+
 # ======================
 # LOG SPLIT ARTIFACT TO W&B
 # ======================
@@ -199,3 +200,16 @@ wandb.summary.update({
 
 # Finish W&B run
 wandb.finish()
+
+
+# ======================
+# FEATURE SELECTION - RANKING
+# ======================
+
+ranking = combined_feature_ranking(train_df, config["data"]["target_col"])
+
+print("\nFeature Ranking:")
+print(ranking)
+
+# Save ranking
+ranking.to_csv("data/processed/feature_ranking.csv")
