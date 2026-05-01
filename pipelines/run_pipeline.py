@@ -15,7 +15,8 @@ from src.data_validation import (
     validate_no_duplicates
 )
 from src.split_data import stratified_split, ks_test
-from src.feature_selection import combined_feature_ranking
+from src.feature_selection import combined_feature_selection
+from src.preprocessing import prepare_dataloaders
 
 
 # ======================
@@ -203,13 +204,27 @@ wandb.finish()
 
 
 # ======================
-# FEATURE SELECTION - RANKING
+# FEATURE SELECTION
 # ======================
 
-ranking = combined_feature_ranking(train_df, config["data"]["target_col"])
+ranking_norm, selected_features, final_features, removed_features, final_vif = combined_feature_selection(
+    train_df,
+    target_col="fetal_health",
+    top_k=10,
+    vif_threshold=10.0
+)
 
-print("\nFeature Ranking:")
-print(ranking)
+train_df_selected = train_df[final_features + ["fetal_health"]]
+test_df_selected = test_df[final_features + ["fetal_health"]]
 
-# Save ranking
-ranking.to_csv("data/processed/feature_ranking.csv")
+
+# ======================
+# STARDARDIZATION
+# ======================
+
+train_loader, test_loader, scaler, input_dim = prepare_dataloaders(
+    train_df_selected,
+    test_df_selected,
+    target_col="fetal_health",
+    batch_size=32
+)
