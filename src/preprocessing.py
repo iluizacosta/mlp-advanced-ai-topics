@@ -17,10 +17,10 @@ def prepare_dataloaders(train_df, test_df, target_col, batch_size=32):
     # 1. Separate features and target
     # ======================
     X_train = train_df.drop(columns=[target_col])
-    y_train = train_df[target_col].values.astype(np.int64)
+    y_train = train_df[target_col].values.astype(np.int64) - 1
 
     X_test = test_df.drop(columns=[target_col])
-    y_test = test_df[target_col].values.astype(np.int64)
+    y_test = test_df[target_col].values.astype(np.int64) - 1
 
     # ======================
     # 2. Standardization
