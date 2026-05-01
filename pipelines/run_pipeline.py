@@ -17,6 +17,8 @@ from src.data_validation import (
 from src.split_data import stratified_split, ks_test
 from src.feature_selection import combined_feature_selection
 from src.preprocessing import prepare_dataloaders
+from src.model import MLP
+from src.train import train_model
 
 
 # ======================
@@ -227,4 +229,26 @@ train_loader, test_loader, scaler, input_dim = prepare_dataloaders(
     test_df_selected,
     target_col="fetal_health",
     batch_size=32
+)
+
+# ======================
+# MLP CLASS
+# ======================
+
+model = MLP(
+    input_dim=input_dim,
+    hidden_sizes=[64, 32],
+    output_dim=3,
+    dropout=0.2
+)
+
+# ======================
+# TRAIN MODEL
+# ======================
+
+model = train_model(
+    config,
+    train_loader,
+    test_loader,
+    input_dim
 )
