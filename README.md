@@ -118,8 +118,8 @@ Multiple training runs were performed to validate consistency. The best-performi
 
 | Metric | Value |
 |--------|------|
-| Accuracy | 0.91 |
-| Weighted F1-score | 0.90 |
+| Accuracy | 0.90 |
+| Weighted F1-score | 0.89 |
 
 ### Observations
 
@@ -131,7 +131,7 @@ Multiple training runs were performed to validate consistency. The best-performi
 
 ---
 
-**Note:** A secondary training run produced slightly lower results (accuracy ≈ 0.898), which is within the expected variation for stochastic training processes.
+**Note:** A secondary training run was performed after corrections to the pipeline. Although it resulted in slightly lower performance metrics, this variation is expected due to the stochastic nature of neural network training. The final run is considered more reliable as it reflects the corrected and fully validated pipeline.
 
 
 ## 🧠 Model Explanation
