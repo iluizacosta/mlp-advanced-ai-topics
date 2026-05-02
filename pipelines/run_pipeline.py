@@ -17,8 +17,8 @@ from src.data_validation import (
 from src.split_data import stratified_split, ks_test
 from src.feature_selection import combined_feature_selection
 from src.preprocessing import prepare_dataloaders
-from src.model import MLP
 from src.train import train_model
+from src.model import MLP
 
 
 # ======================
@@ -180,7 +180,7 @@ test_df.to_csv(test_path, index=False)
 # Initialize W&B run
 run = wandb.init(
     project="mlp-fetal-health",
-    name="data_split_FINAL_TEST",
+    name="data_split",
     config=config
 )
 
@@ -216,6 +216,23 @@ ranking_norm, selected_features, final_features, removed_features, final_vif = c
     vif_threshold=10.0
 )
 
+print("\nInitial selected features:")
+for feature in selected_features:
+    print("-", feature)
+
+print("\nFeatures removed by VIF:")
+if removed_features:
+    for feature in removed_features:
+        print("-", feature)
+else:
+    print("No features were removed.")
+
+print("\nFinal selected features:")
+for feature in final_features:
+    print("-", feature)
+
+print(f"\nTotal final features: {len(final_features)}")
+
 train_df_selected = train_df[final_features + ["fetal_health"]]
 test_df_selected = test_df[final_features + ["fetal_health"]]
 
@@ -231,6 +248,11 @@ train_loader, test_loader, scaler, input_dim = prepare_dataloaders(
     batch_size=32
 )
 
+print(f"\nInput dimension: {input_dim}")
+print(f"Train batches: {len(train_loader)}")
+print(f"Test batches: {len(test_loader)}")
+
+
 # ======================
 # MLP CLASS
 # ======================
@@ -241,6 +263,9 @@ model = MLP(
     output_dim=3,
     dropout=0.2
 )
+
+print(model)
+
 
 # ======================
 # TRAIN MODEL

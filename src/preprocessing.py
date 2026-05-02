@@ -54,19 +54,3 @@ def prepare_dataloaders(train_df, test_df, target_col, batch_size=32):
     input_dim = X_train.shape[1]
 
     return train_loader, test_loader, scaler, input_dim
-
-train_loader, test_loader, scaler, input_dim = prepare_dataloaders(
-    train_df_selected,
-    test_df_selected,
-    target_col="fetal_health",
-    batch_size=32
-)
-
-print(f"Input dimension: {input_dim}")
-print(f"Train batches: {len(train_loader)}")
-print(f"Test batches: {len(test_loader)}")
-
-for X, y in train_loader:
-    print(f"Batch shape (X): {X.shape}")
-    print(f"Batch shape (y): {y.shape}")
-    break
