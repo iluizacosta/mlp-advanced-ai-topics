@@ -215,11 +215,41 @@ Paste your API key.
 
 ---
 
+### 4. Kaggle Authentication (for dataset download)
+
+This project uses `kagglehub` to download the dataset from Kaggle.
+
+Make sure you are authenticated before running the pipeline.
+
+#### Option 1: Using Kaggle CLI
+
+1. Create an account on https://www.kaggle.com
+2. Go to your account settings and generate an API token
+3. Place the `kaggle.json` file in:
+
+- Windows:
+``` bash
+C:\Users\YOUR_USERNAME.kaggle\
+```
+
+- Linux / Mac:
+
+``` bash
+~/.kaggle/
+```
+
+### Option 2: Using environment variables
+
+```bash
+export KAGGLE_USERNAME=your_username
+export KAGGLE_KEY=your_key
+```
+
 ### 4. 🚀 Run the Project
 
 You can execute the project in two different ways:
 
-- Option 1: Run the full pipeline (recommended)
+- Option 1: Run the full pipeline
 
 ```bash
 python pipelines/run_pipeline.py
