@@ -261,7 +261,7 @@ export KAGGLE_USERNAME=your_username
 export KAGGLE_KEY=your_key
 ```
 
-### 4. 🚀 Run the Project
+### 5. 🚀 Run the Project
 
 You can execute the project in two different ways:
 
