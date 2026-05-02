@@ -99,32 +99,40 @@ Architecture:
   - trained model (.pt)
 
 ### 11. Evaluation
-Metrics:
+
+The model was evaluated using the following classification metrics:
 - Accuracy
 - Precision
 - Recall
 - F1-score
 - Confusion Matrix
 
-Final performance:
-- Accuracy: ~91%
-- F1-score: ~0.90
+Multiple training runs were performed to validate consistency. The best-performing model achieved the following results:
+
+- Accuracy: 0.91  
+- Weighted F1-score: 0.90  
 
 ---
 
 ## 📊 Key Results
 
 | Metric | Value |
-|------|------|
+|--------|------|
 | Accuracy | 0.91 |
 | Weighted F1-score | 0.90 |
 
-Observations:
-- Strong performance on "Normal"
-- Good detection of "Pathological"
-- Lower recall for "Suspect" due to class imbalance and overlapping features
+### Observations
+
+- The model achieved strong overall performance.
+- The "Normal" class presented the highest performance due to its larger representation in the dataset.
+- The "Pathological" class was also well identified, indicating the model's ability to detect critical cases.
+- The "Suspect" class showed lower recall, indicating difficulty in distinguishing intermediate patterns.
+- This behavior is likely due to class imbalance and overlapping feature distributions between classes.
 
 ---
+
+**Note:** A secondary training run produced slightly lower results (accuracy ≈ 0.898), which is within the expected variation for stochastic training processes.
+
 
 ## 🧠 Model Explanation
 
@@ -139,6 +147,7 @@ No Softmax is applied in the model, as it is internally handled by the loss func
 
 ## 📁 Project Structure
 
+```bash
 mlp-advanced-ai-topics/
 │
 ├── config/
@@ -174,6 +183,7 @@ mlp-advanced-ai-topics/
 ├── fetal_health_notebook.ipynb
 ├── README.md
 └── requirements.txt
+```
 
 ---
 
