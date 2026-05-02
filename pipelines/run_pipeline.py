@@ -18,7 +18,6 @@ from src.split_data import stratified_split, ks_test
 from src.feature_selection import combined_feature_selection
 from src.preprocessing import prepare_dataloaders
 from src.train import train_model
-from src.model import MLP
 
 
 # ======================
@@ -29,6 +28,9 @@ with open("config/config.yaml", "r") as f:
 
 # Set random seed for reproducibility
 set_seed(config["seed"])
+
+# Setting target column
+target_col = config["data"]["target_col"]
 
 
 # ======================
@@ -211,7 +213,7 @@ wandb.finish()
 
 ranking_norm, selected_features, final_features, removed_features, final_vif = combined_feature_selection(
     train_df,
-    target_col="fetal_health",
+    target_col="target_col",
     top_k=10,
     vif_threshold=10.0
 )
@@ -233,8 +235,8 @@ for feature in final_features:
 
 print(f"\nTotal final features: {len(final_features)}")
 
-train_df_selected = train_df[final_features + ["fetal_health"]]
-test_df_selected = test_df[final_features + ["fetal_health"]]
+train_df_selected = train_df[final_features + [target_col]]
+test_df_selected = test_df[final_features + [target_col]]
 
 
 # ======================
@@ -244,27 +246,13 @@ test_df_selected = test_df[final_features + ["fetal_health"]]
 train_loader, test_loader, scaler, input_dim = prepare_dataloaders(
     train_df_selected,
     test_df_selected,
-    target_col="fetal_health",
-    batch_size=32
+    target_col=target_col,
+    batch_size=config["model"]["batch_size"]
 )
 
 print(f"\nInput dimension: {input_dim}")
 print(f"Train batches: {len(train_loader)}")
 print(f"Test batches: {len(test_loader)}")
-
-
-# ======================
-# MLP CLASS
-# ======================
-
-model = MLP(
-    input_dim=input_dim,
-    hidden_sizes=[64, 32],
-    output_dim=3,
-    dropout=0.2
-)
-
-print(model)
 
 
 # ======================

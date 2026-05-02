@@ -2,7 +2,7 @@
 
 This project implements a complete end-to-end machine learning pipeline for fetal health classification using a Multi-Layer Perceptron (MLP).
 
-The objective is to classify fetal health into three categories:
+The objective of this project is to classify fetal health into three categories:
 - Normal
 - Suspect
 - Pathological
@@ -186,31 +186,57 @@ python -m venv .venv
 ```
 Activate:
 
-# Windows
+```bash
+#### Windows
 .venv\Scripts\activate
+```
 
-# Linux / Mac
+```bash
+#### Linux / Mac
 source .venv/bin/activate
+```
 
 ---
 
 ### 2. Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
 ---
 
 ### 3. Login to Weights & Biases
 
+```bash
 wandb login
-
+```
 Paste your API key.
 
 ---
 
-### 4. Run the pipeline
+### 4. 🚀 Run the Project
 
+You can execute the project in two different ways:
+
+- Option 1: Run the full pipeline (recommended)
+
+```bash
 python pipelines/run_pipeline.py
+```
+- Option 2: Run using VS Code (Jupyter)
+
+1. Open the project in VS Code:
+
+``` bash
+cd mlp-advanced-ai-topics
+```
+```bash
+code .
+```
+2. Open fetal_health_notebook.ipynb
+3. Select the .venv kernel
+4. Run the cells using Shift + Enter
 
 ---
 
