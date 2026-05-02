@@ -213,7 +213,7 @@ wandb.finish()
 
 ranking_norm, selected_features, final_features, removed_features, final_vif = combined_feature_selection(
     train_df,
-    target_col="target_col",
+    target_col=target_col,
     top_k=10,
     vif_threshold=10.0
 )
@@ -240,7 +240,7 @@ test_df_selected = test_df[final_features + [target_col]]
 
 
 # ======================
-# STARDARDIZATION
+# STANDARDIZATION
 # ======================
 
 train_loader, test_loader, scaler, input_dim = prepare_dataloaders(
