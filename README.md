@@ -145,13 +145,11 @@ mlp-advanced-ai-topics/
 │ └── config.yaml
 │
 ├── data/
+│ ├── raw/
+│ └── processed/
 │
 ├── pipelines/
 │ └── run_pipeline.py
-│
-├── reports/
-│ ├── figures/
-│ └── confusion_matrix.png
 │
 ├── src/
 │ ├── data_cleaning.py
@@ -163,6 +161,10 @@ mlp-advanced-ai-topics/
 │ ├── split_data.py
 │ ├── train.py
 │ └── utils.py
+│
+├── reports/
+│ └── figures/
+│ └── confusion_matrix.png
 │
 ├── tests/
 │ ├── test_cleaning.py
@@ -179,8 +181,9 @@ mlp-advanced-ai-topics/
 
 ### 1. Create virtual environment
 
+```bash
 python -m venv .venv
-
+```
 Activate:
 
 # Windows
