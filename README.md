@@ -151,11 +151,15 @@ No Softmax is applied in the model, as it is internally handled by the loss func
 mlp-advanced-ai-topics/
 │
 ├── config/
-│ └── config.yaml
+│   └── config.yaml
 │
 ├── data/
-│ ├── raw/
-│ └── processed/
+│   ├── raw/
+│   │   └── fetal_health.csv
+│   └── processed/
+│       ├── fetal_health_clean.csv
+│       ├── train.csv
+│       └── test.csv
 │
 ├── pipelines/
 │ └── run_pipeline.py
@@ -172,14 +176,16 @@ mlp-advanced-ai-topics/
 │ └── utils.py
 │
 ├── reports/
-│ └── figures/
-│ └── confusion_matrix.png
+│   └── figures/
+│       └── confusion_matrix.png
 │
 ├── tests/
 │ ├── test_cleaning.py
 │ └── test_split.py
 │
-├── best_model.pt
+├── best_model.pt # Current run 
+├── best_model_first_run.pt
+├── best_model_second_run.pt
 ├── fetal_health_notebook.ipynb
 ├── README.md
 └── requirements.txt
