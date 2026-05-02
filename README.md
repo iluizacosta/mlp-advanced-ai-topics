@@ -210,3 +210,61 @@ Paste your API key.
 python pipelines/run_pipeline.py
 
 ---
+
+## 🔁 Reproducibility
+
+- Random seed fixed
+- Config file controls all parameters
+- No data leakage (scaler fit only on train)
+- Full pipeline automated
+
+---
+
+## 📈 W&B Tracking
+
+This project uses W&B for:
+
+- Logging training metrics
+- Tracking hyperparameters
+- Versioning datasets and models
+
+Artifacts created:
+- raw_data
+- clean_data
+- dataset_split
+- best_model (multiple versions)
+
+---
+
+## ⚠️ Known Limitations
+
+- Class imbalance affects "Suspect" recall
+- Feature overlap between classes
+- MLP may not capture all nonlinear patterns
+
+---
+
+## 🚀 Future Improvements
+
+- Apply class weighting
+- Oversampling (SMOTE)
+- Hyperparameter tuning
+- Try other models (XGBoost, LightGBM)
+- Deeper neural networks
+
+---
+
+## 📚 Technologies Used
+
+- Python
+- PyTorch
+- Scikit-learn
+- Pandas / NumPy
+- Seaborn / Matplotlib
+- Weights & Biases (W&B)
+
+---
+
+## 📌 Conclusion
+
+This project demonstrates a complete and reproducible machine learning workflow, from raw data to model evaluation, following best practices in MLOps and experimental tracking.
