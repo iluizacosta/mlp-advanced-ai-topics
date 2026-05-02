@@ -9,28 +9,32 @@ from src.model import MLP
 
 def train_model(config, train_loader, test_loader, input_dim):
     """
-    Train MLP model with W&B logging and early stopping.
+    Train MLP model with W&B logging, early stopping, and loss tracking.
     """
 
-    # ---- Initialize W&B run ----
+    run_name = (
+        f"mlp_{input_dim}feat_"
+        f"{'-'.join(map(str, config['model']['hidden_sizes']))}_"
+        f"lr{config['model']['learning_rate']}"
+    )
+
     wandb.init(
-        project="fetal-health-mlp",
-        name="mlp_7feat_64-32_lr1e-3",
+        project="mlp-fetal-health",
+        name=run_name,
         config=config
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # ---- Model ----
     model = MLP(
         input_dim=input_dim,
         hidden_sizes=config["model"]["hidden_sizes"],
-        output_dim=3,  # multiclass
+        output_dim=3,
         dropout=config["model"]["dropout"]
     ).to(device)
 
-    # ---- Loss and optimizer ----
     criterion = nn.CrossEntropyLoss()
+
     optimizer = optim.Adam(
         model.parameters(),
         lr=config["model"]["learning_rate"]
@@ -40,11 +44,12 @@ def train_model(config, train_loader, test_loader, input_dim):
     patience = config["model"]["early_stopping_patience"]
     patience_counter = 0
 
+    train_losses = []
+    val_losses = []
+
     for epoch in range(config["model"]["epochs"]):
 
-        # ======================
         # Training phase
-        # ======================
         model.train()
         train_loss = 0
 
@@ -53,9 +58,10 @@ def train_model(config, train_loader, test_loader, input_dim):
             y_batch = y_batch.to(device)
 
             optimizer.zero_grad()
-            outputs = model(X_batch)
 
+            outputs = model(X_batch)
             loss = criterion(outputs, y_batch)
+
             loss.backward()
             optimizer.step()
 
@@ -63,9 +69,7 @@ def train_model(config, train_loader, test_loader, input_dim):
 
         train_loss /= len(train_loader.dataset)
 
-        # ======================
         # Validation phase
-        # ======================
         model.eval()
         val_loss = 0
         y_true = []
@@ -88,14 +92,14 @@ def train_model(config, train_loader, test_loader, input_dim):
 
         val_loss /= len(test_loader.dataset)
 
+        train_losses.append(train_loss)
+        val_losses.append(val_loss)
+
         acc = accuracy_score(y_true, y_pred)
         f1 = f1_score(y_true, y_pred, average="weighted")
 
-        # ======================
-        # W&B logging
-        # ======================
         wandb.log({
-            "epoch": epoch,
+            "epoch": epoch + 1,
             "train_loss": train_loss,
             "val_loss": val_loss,
             "accuracy": acc,
@@ -103,40 +107,37 @@ def train_model(config, train_loader, test_loader, input_dim):
         })
 
         print(
-            f"Epoch {epoch+1} | "
+            f"Epoch {epoch + 1} | "
             f"Train Loss: {train_loss:.4f} | "
             f"Val Loss: {val_loss:.4f} | "
             f"Acc: {acc:.4f} | "
             f"F1: {f1:.4f}"
         )
 
-        # ======================
         # Early stopping
-        # ======================
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             patience_counter = 0
 
             torch.save(model.state_dict(), "best_model.pt")
 
-            # log best model as artifact
-            artifact = wandb.Artifact(
-                "best-model",
-                type="model"
-            )
-            artifact.add_file("best_model.pt")
-            wandb.log_artifact(artifact)
-
         else:
             patience_counter += 1
 
             if patience_counter >= patience:
-                print(f"Early stopping at epoch {epoch+1}")
+                print(f"Early stopping at epoch {epoch + 1}")
                 break
 
-    # ---- Load best weights ----
     model.load_state_dict(torch.load("best_model.pt"))
+
+    # Log final best model as artifact
+    artifact = wandb.Artifact(
+        "best-model",
+        type="model"
+    )
+    artifact.add_file("best_model.pt")
+    wandb.log_artifact(artifact)
 
     wandb.finish()
 
-    return model
+    return model, train_losses, val_losses
