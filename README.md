@@ -162,26 +162,26 @@ mlp-advanced-ai-topics/
 │       └── test.csv
 │
 ├── pipelines/
-│ └── run_pipeline.py
+│   └── run_pipeline.py
 │
 ├── src/
-│ ├── data_cleaning.py
-│ ├── data_loading.py
-│ ├── data_validation.py
-│ ├── feature_selection.py
-│ ├── model.py
-│ ├── preprocessing.py
-│ ├── split_data.py
-│ ├── train.py
-│ └── utils.py
+│   ├── data_cleaning.py
+│   ├── data_loading.py
+│   ├── data_validation.py
+│   ├── feature_selection.py
+│   ├── model.py
+│   ├── preprocessing.py
+│   ├── split_data.py
+│   ├── train.py
+│   └── utils.py
 │
 ├── reports/
 │   └── figures/
 │       └── confusion_matrix.png
 │
 ├── tests/
-│ ├── test_cleaning.py
-│ └── test_split.py
+│   ├── test_cleaning.py
+│   └── test_split.py
 │
 ├── best_model.pt # Current run 
 ├── best_model_first_run.pt
